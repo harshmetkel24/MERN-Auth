@@ -2,7 +2,7 @@ const User = require("../models/userModel");
 
 const jwt = require("jsonwebtoken");
 
-const createToken = (_id) => {
+const createToken = async (_id) => {
   // 1st argument: payload -> non sensitive data
   // 2nd argument: secret
   // 3rd argument: options
@@ -16,7 +16,7 @@ const loginUser = async (req, res) => {
   try {
     const user = await User.login(email, password);
 
-    const token = createToken(user._id);
+    const token = await createToken(user._id);
 
     res.status(200).json({ email, token });
   } catch (error) {

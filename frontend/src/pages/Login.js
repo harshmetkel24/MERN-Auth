@@ -8,7 +8,7 @@ const Login = () => {
   const { login, error, isLoading } = useLogin();
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+    await e.preventDefault();
 
     await login(email, password);
   };
