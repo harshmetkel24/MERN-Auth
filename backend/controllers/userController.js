@@ -2,7 +2,7 @@ const User = require("../models/userModel");
 
 const jwt = require("jsonwebtoken");
 
-const createToken = async (_id) => {
+const createToken = (_id) => {
   // 1st argument: payload -> non sensitive data
   // 2nd argument: secret
   // 3rd argument: options
@@ -12,16 +12,22 @@ const createToken = async (_id) => {
 // login user
 const loginUser = async (req, res) => {
   const { email, password } = req.body;
+  User.login(email, password)
+    .then((user) => {
+      const token = createToken(user._id);
+      res.status(200).json({ email, token });
+    })
+    .catch((error) => res.status(400).json({ error: error.message }));
 
-  try {
-    const user = await User.login(email, password);
+  // try {
+  //   const user = await User.login(email, password);
 
-    const token = await createToken(user._id);
+  //   const token = await createToken(user._id);
 
-    res.status(200).json({ email, token });
-  } catch (error) {
-    res.status(400).json({ error: error.message });
-  }
+  //   res.status(200).json({ email, token });
+  // } catch (error) {
+  //   res.status(400).json({ error: error.message });
+  // }
 };
 
 // signup user
